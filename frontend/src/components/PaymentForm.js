@@ -24,6 +24,7 @@ const CARD_OPTIONS = {
 
 const PaymentForm = () => {
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const stripe = useStripe();
   const elements = useElements();
 
@@ -48,14 +49,17 @@ const PaymentForm = () => {
         }
       } catch (error) {
         console.log('Error:', error);
+        setErrorMessage(error);
       }
     } else {
       console.log(error.message);
+      setErrorMessage(error.message);
     }
   };
 
   return (
     <>
+      {errorMessage}
       {!success ? (
         <form onSubmit={handleSubmit}>
           <fieldset className='FormGroup'>
@@ -67,12 +71,13 @@ const PaymentForm = () => {
           <br />
           <br />
           <div>
-            Default Stripe Values:
+            Go with:
             <p>Card: 4242 4242 4242 4242</p>
             <p>Expiration: 04/24</p>
             <p>CSV: 292</p>
             <p>ZIP: 29872</p>
           </div>
+          <div>Please, check console and network tab for fetching details!</div>
         </form>
       ) : (
         <div>
